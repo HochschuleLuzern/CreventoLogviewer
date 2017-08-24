@@ -1,0 +1,45 @@
+statuscode_101#:#Erstellt
+statuscode_102#:#Update
+statuscode_103#:#Entfernt
+statuscode_104#:#Hinzugefügt
+statuscode_121#:#Fehler beim erstellen
+statuscode_123#:#Fehler beim entfernen
+statuscode_205#:#Erster Import
+statuscode_206#:#Erster Import, keine Mitgliedschaften
+statuscode_211#:#Achtung: Name ungültig
+statuscode_212#:#Achtung: Nicht in ILIAS vorhanden
+statuscode_213#:#Achtung: In ILIAS mehrfach vorhanden
+statuscode_231#:#Update
+statuscode_232#:#Keine Mitgliedschaften
+statuscode_301#:#Erstellt
+statuscode_302#:#Update
+statuscode_303#:#Umbenannt
+statuscode_304#:#Konvertiert
+statuscode_313#:#Achtung: Konflikt
+statuscode_324#:#Fehler
+
+col_evento_id#:#Evento ID
+col_ref_id#:#Reference ID
+col_role_id#:#Rollen ID
+col_end_date#:#Enddatum
+col_number_of_subs#:#Anzahl Mitglieder
+col_last_import_date#:#Letzter Import
+col_import_infocode#:#Import Infocode
+col_user#:#User
+col_crs_grp#:#Kurs / Gruppe
+col_role#:#Rolle
+col_#:#
+col_#:#
+col_#:#
+col_#:#
+
+tab_import_logs#:#Evento Import Logs
+tab_usrs#:#Users
+tab_mas#:#Kurse & Gruppen
+tab_subs#:#Mitgliedschaften
+
+title_last_run#:#Letzter Durchlauf: 
+subtitle_eventoimport#:#Zeigt Logs der vergangenen Eventoimports
+title_usrs#:#Users
+title_mas#:#Kurse & Gruppen
+title_subs#:#Mitgliedschaften
