@@ -6,7 +6,7 @@ class ilCreventoLogviewerUsrsTableGUI extends ilCreventoLogviewerBaseTableGUI
     function __construct($object_gui, $cmd = 'showUsrs')
     {
         parent::__construct($object_gui, $cmd);
-        $this->plugin = ilStructureImportPlugin::getInstance();
+        $this->plugin = ilCreventoLogviewerPlugin::getInstance();
         
         $this->setRowTemplate("tpl.usrs_table_row.html", "Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer");
         $this->setTitle($this->pl->txt('title_usrs'));
@@ -38,14 +38,15 @@ class ilCreventoLogviewerUsrsTableGUI extends ilCreventoLogviewerBaseTableGUI
     protected function setHeaderRow()
     {
         global $lng;
-        $this->addColumn('Evento ID', 'evento_id');
-        $this->addColumn('Login', 'usrname');
+        $this->addColumn($this->pl->txt('col_evento_id'), 'evento_id');
+        $this->addColumn($lng->txt('login'), 'usrname');
         $this->addColumn($lng->txt('gender'), 'gender');
         $this->addColumn($lng->txt('firstname'), 'firstname');
         $this->addColumn($lng->txt('lastname'), 'lastname');
         $this->addColumn($lng->txt('mail'), 'mail');
-        $this->addColumn('Letzter Import', 'last_import_date');
-        $this->addColumn('Update Infocode', 'update_info_code');
+        $this->addColumn($this->pl->txt('col_last_import_date'), 'last_import_date');
+        $this->addColumn($this->pl->txt('col_import_infocode'), 'update_info_code');
+        $this->addColumn($this->pl->txt('col_last_import_data'));
     }
     
     protected function getTableItems()
@@ -54,6 +55,8 @@ class ilCreventoLogviewerUsrsTableGUI extends ilCreventoLogviewerBaseTableGUI
         $query = new ilCreventoUsrsQuery();
         $query->setStatuscodeFilter($this->filter['statuscodes']);
         $query->setTextFilters('usrname', $this->filter['login']);
+        $query->setLimit($this->limit);
+        $query->setOffset($this->offset);
         return $query->query();
         //$this->setData(ilCreventoQuery::_getUsrs(10, 0));
     }
@@ -99,6 +102,11 @@ class ilCreventoLogviewerUsrsTableGUI extends ilCreventoLogviewerBaseTableGUI
         
         $this->tpl->setCurrentBlock('update_infocode_td');
         $this->tpl->setVariable('UPDATE_INFOCODE', $this->pl->txt('statuscode_' . $row['update_info_code']));
+        $this->tpl->parseCurrentBlock();
+        
+        $this->tpl->setCurrentBlock('last_import_data_td');
+        $button = $this->getModalButton($row['evento_id']);
+        $this->tpl->setVariable('DATA_BUTTON', $button->render());
         $this->tpl->parseCurrentBlock();
     }	
     

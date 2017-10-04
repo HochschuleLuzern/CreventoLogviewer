@@ -167,14 +167,17 @@ class ilCreventoLogviewerGUI
         include_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/Usrs/class.ilCreventoLogviewerUsrsTableGUI.php';
         $table = new ilCreventoLogviewerUsrsTableGUI($this);
         $this->tpl->setContent($table->getHTML());
-        
-        /*include_once "./Services/UIComponent/Modal/classes/class.ilModalGUI.php";
-        $modal = ilModalGUI::getInstance();
-        $modal->setHeading('Hello World');
-        $modal->setId("ilCrevento");
-        $modal->setBody('<div id="ilCrevento">Heeeelo</div>');
-        $modal->initJS();
-        $this->tpl->setContent($modal->getHTML());*/
+        $this->setModalJavaScript('getUsrsData');
+    }
+    
+    protected function getUsrsData()
+    {
+        global $ilDB;
+        $evento_id = $_GET['evento_id'];
+        include_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/Usrs/class.ilCreventoUsrsQuery.php';
+        $data = ilCreventoUsrsQuery::fetchData($evento_id);
+        echo '<pre>'.print_r(unserialize($data), true) . '</pre>';
+        exit;
     }
     
     protected function applyMasFilter()
@@ -203,6 +206,17 @@ class ilCreventoLogviewerGUI
         include_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/Mas/class.ilCreventoLogviewerMasTableGUI.php';
         $table = new ilCreventoLogviewerMasTableGUI($this);
         $this->tpl->setContent($table->getHTML());
+        $this->setModalJavaScript('getMasData');
+    }
+    
+    protected function getMasData()
+    {
+        global $ilDB;
+        $evento_id = $_GET['evento_id'];
+        include_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/Mas/class.ilCreventoMasQuery.php';
+        $data = ilCreventoMasQuery::fetchData($evento_id);
+        echo '<pre>'.print_r(unserialize($data), true) . '</pre>';
+        exit;
     }
     
     protected function applySubsFilter()
@@ -231,6 +245,24 @@ class ilCreventoLogviewerGUI
         include_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/Subs/class.ilCreventoLogviewerSubsTableGUI.php';
         $table = new ilCreventoLogviewerSubsTableGUI($this);
         $this->tpl->setContent($table->getHTML());
+        $this->setModalJavaScript('getSubsData');
+    }
+    
+    protected function getSubsData()
+    {
+        global $ilDB;
+        $evento_id = $_GET['evento_id'];
+        include_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/Subs/class.ilCreventoSubsQuery.php';
+        $data = ilCreventoSubsQuery::fetchData(explode('_', $evento_id));
+        echo '<pre>'.print_r(unserialize($data), true) . '</pre>';
+        exit;
+    }
+    
+    protected function setModalJavaScript($cmd)
+    {
+        $this->tpl->addJavaScript('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/js/ImportDataModal.js');
+        $link = str_replace('&amp;', '&', ILIAS_HTTP_PATH."/".$this->ctrl->getLinkTarget($this, $cmd));
+        $this->tpl->addOnLoadCode("crevento_url='$link';");
     }
     
     /**

@@ -5,8 +5,11 @@ class ilCreventoLogviewerMasTableGUI extends ilCreventoLogviewerBaseTableGUI
 {
     function __construct($object_gui, $cmd = 'showMas')
     {
+        /** @var $ilCtrl ilCtrl */
+        global $ilCtrl;
         parent::__construct($object_gui, $cmd);
-        $this->plugin = ilStructureImportPlugin::getInstance();
+        $this->plugin = ilCreventoLogviewerPlugin::getInstance();
+        $this->modal_url = $ilCtrl->getLinkTarget($object_gui, 'getMasData', '',true);;
         
         $this->setRowTemplate("tpl.mas_table_row.html", "Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer");
         $this->setTitle($this->pl->txt('title_mas'));
@@ -53,6 +56,7 @@ class ilCreventoLogviewerMasTableGUI extends ilCreventoLogviewerBaseTableGUI
         $this->addColumn($this->pl->txt('col_number_of_subs'), 'number_of_subs');
         $this->addColumn($this->pl->txt('col_last_import_date'), 'last_import_date');
         $this->addColumn($this->pl->txt('col_import_infocode'), 'update_info_code');
+        $this->addColumn($this->pl->txt('col_last_import_data'));//$this->pl->txt('col_last_import_data'));
     }
     
     protected function getTableItems()
@@ -61,9 +65,9 @@ class ilCreventoLogviewerMasTableGUI extends ilCreventoLogviewerBaseTableGUI
         $query = new ilCreventoMasQuery();//var_dump($this->filter);die;
         $query->setTextFilters('evento_id', $this->filter['evento_id']);
         $query->setStatuscodeFilter($this->filter['statuscodes']);
+        $query->setLimit($this->getLimit());
         $query->setOffset($this->getOffset());
         return $query->query();
-        //$this->setData(ilCreventoQuery::_getUsrs(10, 0));
     }
     
     /**
@@ -105,6 +109,12 @@ class ilCreventoLogviewerMasTableGUI extends ilCreventoLogviewerBaseTableGUI
         $this->tpl->setVariable('UPDATE_INFOCODE', $this->pl->txt('statuscode_' . $row['update_info_code']));
         $this->tpl->setVariable('INFOCODE_COLOR', $this->getInfocodeColor($row['update_info_code']));
         $this->tpl->parseCurrentBlock();
+        
+        $this->tpl->setCurrentBlock('last_import_data_td');
+        $button = $this->getModalButton($row['evento_id']);
+        $this->tpl->setVariable('DATA_BUTTON', $button->render());
+        $this->tpl->parseCurrentBlock();
+
     }
     
     protected function getStatuscodeArray()

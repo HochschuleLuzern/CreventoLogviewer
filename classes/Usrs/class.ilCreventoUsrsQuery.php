@@ -17,4 +17,18 @@ class ilCreventoUsrsQuery extends ilCreventoBaseQuery
     {
         return $this->db_table;
     }
+    
+    public static function fetchData($evento_id)
+    {
+        global $ilDB;
+
+        $query = 'SELECT last_import_data FROM crnhk_crevento_usrs WHERE evento_id = ' . $ilDB->quote($evento_id, 'integer');
+                        
+        $res = $ilDB->query($query);
+        while($row = $ilDB->fetchAssoc($res))
+        {
+            $data = $row['last_import_data'];
+        }
+        return $data;
+    }
 }

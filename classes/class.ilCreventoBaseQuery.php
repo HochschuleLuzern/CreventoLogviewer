@@ -35,6 +35,11 @@ abstract class ilCreventoBaseQuery
     
     public abstract function getDBTable();
     
+    public function getCountQuery()
+    {
+        return 'SELECT COUNT('.$this->columns[0].') as cnt FROM ' . $this->getDBTable();
+    }
+    
     public function setTextFilters($column, $filter)
     {
         if(in_array($column, $this->columns))
@@ -84,6 +89,11 @@ abstract class ilCreventoBaseQuery
     {
         $this->offset = $offset;
     }
+
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+    }
     
     /**
      * Set order field (column in usr_data)
@@ -116,16 +126,36 @@ abstract class ilCreventoBaseQuery
     
     public function query()
     {
-        $query = 'SELECT * FROM ' . $this->getDBTable();
-        $query .= $this->createJoinQuery();
-        $query .= $this->createWhereQuery();
-        $query .= $this->createOrderQuery();
-        $query .= $this->createLimitOffsetQuery();
-
-        $res = $this->db->query($query);
-        $data = $this->filterAndGetResult($res);
+        // Set select and count query
+        $select_query = 'SELECT * FROM ' . $this->getDBTable();
+        $count_query = $this->getCountQuery();
         
-        return $data;
+        $join = $this->createJoinQuery();
+        $select_query .= $join;
+        $count_query .= $join;
+        
+        $where .= $this->createWhereQuery();
+        $select_query .= $where;
+        $count_query .= $where;
+        
+        $select_query .= $this->createOrderQuery();
+        //var_dump($select_query);die;
+        $set = $this->db->query($count_query);
+        $count = ($rec = $this->db->fetchAssoc($set)) ? $rec['cnt'] : 0;
+
+        $offset = (int) $this->offset;
+        $limit = (int) $this->limit;
+        if($offset >= $count)
+        {
+            $offset = 0;
+        }
+        $this->db->setLimit($limit, $offset);
+        //$query .= $this->createLimitOffsetQuery();
+
+        $res = $this->db->query($select_query);
+        $data = $this->filterAndGetResult($res);
+
+        return array('count' => $count, 'set' => $data);
     }
 
     protected function createJoinQuery()
@@ -177,4 +207,6 @@ abstract class ilCreventoBaseQuery
         
         return $data;
     }
+    
+    abstract public static function fetchData($evento_id);
 }

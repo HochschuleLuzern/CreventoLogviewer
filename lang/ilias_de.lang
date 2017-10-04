@@ -28,7 +28,7 @@ col_import_infocode#:#Import Infocode
 col_user#:#User
 col_crs_grp#:#Kurs / Gruppe
 col_role#:#Rolle
-col_#:#
+col_last_import_data#:#Letzte Importdaten
 col_#:#
 col_#:#
 col_#:#
@@ -43,3 +43,5 @@ subtitle_eventoimport#:#Zeigt Logs der vergangenen Eventoimports
 title_usrs#:#Users
 title_mas#:#Kurse & Gruppen
 title_subs#:#Mitgliedschaften
+
+btn_show_data#:#Daten anzeigen

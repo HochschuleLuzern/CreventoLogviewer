@@ -51,6 +51,7 @@ class ilCreventoLogviewerSubsTableGUI extends ilCreventoLogviewerBaseTableGUI
         $this->addColumn($this->pl->txt('col_role'), 'role_id');
         $this->addColumn($this->pl->txt('col_last_import_date'), 'last_import_date');
         $this->addColumn($this->pl->txt('col_import_infocode'), 'update_info_code');
+        //$this->addColumn($this->pl->txt('col_last_import_data'));
     }
     
     protected function getTableItems()
@@ -59,6 +60,8 @@ class ilCreventoLogviewerSubsTableGUI extends ilCreventoLogviewerBaseTableGUI
         $query = new ilCreventoSubsQuery();
         $query->setStatuscodeFilter($this->filter['statuscodes']);
         $query->setAfterSQLFilter('crs_grp', $this->filter['crs_grp_title']);
+        $query->setLimit($this->limit);
+        $query->setOffset($this->offset);
         return $query->query();
         //$this->setData(ilCreventoQuery::_getUsrs(10, 0));
     }
@@ -92,6 +95,11 @@ class ilCreventoLogviewerSubsTableGUI extends ilCreventoLogviewerBaseTableGUI
         $this->tpl->setCurrentBlock('update_infocode_td');
         $this->tpl->setVariable('UPDATE_INFOCODE', $this->pl->txt('statuscode_' . $row['update_info_code']));
         $this->tpl->parseCurrentBlock();
+        
+        /*$this->tpl->setCurrentBlock('last_import_data_td');
+        $button = $this->getModalButton($row['usr_id'] . '_' . $row['role_id']);
+        $this->tpl->setVariable('DATA_BUTTON', $button->render());
+        $this->tpl->parseCurrentBlock();*/
     }
     
     private function createUserLink($usr_id)

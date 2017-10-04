@@ -10,6 +10,9 @@ abstract class ilCreventoLogviewerBaseTableGUI extends ilTable2GUI
     /** @var $ctrl ilCtrl */
     protected $ctrl;
     
+    protected $modal_id = 'import_data_modal';
+    protected $modal_url;
+    
     function __construct($a_parent_obj, $cmd)
     {        
         global $ilCtrl;
@@ -20,8 +23,8 @@ abstract class ilCreventoLogviewerBaseTableGUI extends ilTable2GUI
         $this->ctrl = &$ilCtrl;
         
         $this->setShowRowsSelector(true);
-        $this->setExternalSorting(false);
-        $this->setExternalSegmentation(false);
+        $this->setExternalSorting(true);
+        $this->setExternalSegmentation(true);
         $this->setEnableHeader(true);
         
         $this->setEnableTitle(true);
@@ -33,12 +36,28 @@ abstract class ilCreventoLogviewerBaseTableGUI extends ilTable2GUI
         $this->setLimit(1000);
         $this->determineOffsetAndOrder();
         $this->setHeaderRow();
-        $this->setData($this->getTableItems());
+        
+        $this->createAndPrepareModal();
+        
+        $table_data = $this->getTableItems();
+        $this->setMaxCount($table_data['count']);
+        $this->setData($table_data['set']);
     }
     
     abstract protected function setHeaderRow();
 
     abstract protected function getTableItems();
+    
+    protected function createAndPrepareModal()
+    {
+        include_once 'Services/UIComponent/Modal/classes/class.ilModalGUI.php';
+        include_once 'Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/CreventoLogviewer/classes/class.ilCreventoBtnOpenModal.php';
+        $this->modal = ilModalGUI::getInstance();
+        $this->modal->setHeading('Heading');
+        $this->modal->setBody('Body');
+        
+        $this->modal->setId($this->modal_id);
+    }
     
     protected function setAndGetInfocodeFilter()
     {
@@ -96,4 +115,18 @@ abstract class ilCreventoLogviewerBaseTableGUI extends ilTable2GUI
     }
     
     abstract protected function getStatuscodeArray();
+    
+    protected function getModalButton($db_id)
+    {
+        $button = ilCreventoBtnOpenModal::getInstance();
+        $button->setCaption($this->pl->txt('btn_show_data'), false);
+        $button->setDataTarget('#' . $this->modal_id);
+        $button->setOnClick("setModalContent('$db_id')");
+        return $button;
+    }
+    
+    public function getHTML()
+    {
+        return parent::getHTML() . $this->modal->getHTML();
+    }
 }

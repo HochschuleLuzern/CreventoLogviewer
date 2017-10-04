@@ -41,5 +41,21 @@ class ilCreventoSubsQuery extends ilCreventoBaseQuery
         return $data;
     }
     
-    
+    public static function fetchData($evento_id)
+    {
+        global $ilDB;
+        
+        $usr_id = $evento_id[0];
+        $role_id = $evento_id[1];
+
+        $query = 'SELECT last_import_data FROM crnhk_crevento_subs WHERE usr_id = ' .  
+                        $ilDB->quote($usr_id, 'integer') . ' AND role_id = ' . $ilDB->quote($role_id, 'integer');
+        
+        $res = $ilDB->query($query);
+        while($row = $ilDB->fetchAssoc($res))
+        {
+            $data = $row['last_import_data'];
+        }
+        return $data;
+    }
 }
