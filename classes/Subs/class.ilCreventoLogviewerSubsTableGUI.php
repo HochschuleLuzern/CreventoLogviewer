@@ -119,6 +119,6 @@ class ilCreventoLogviewerSubsTableGUI extends ilCreventoLogviewerBaseTableGUI
     
     protected function getStatuscodeArray()
     {
-        return array(102, 103, 104, 121, 123);
+        return array(101, 102, 103, 104, 121, 123);
     }
 }

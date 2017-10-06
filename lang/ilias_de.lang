@@ -31,7 +31,6 @@ col_role#:#Rolle
 col_last_import_data#:#Letzte Importdaten
 col_#:#
 col_#:#
-col_#:#
 
 tab_import_logs#:#Evento Import Logs
 tab_usrs#:#Users
@@ -45,3 +44,4 @@ title_mas#:#Kurse & Gruppen
 title_subs#:#Mitgliedschaften
 
 btn_show_data#:#Daten anzeigen
+msg_no_entries#:#Keine Einträge gefunden
