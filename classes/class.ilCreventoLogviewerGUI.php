@@ -280,7 +280,7 @@ class ilCreventoLogviewerGUI
         {
             $auto->setLimit(ilUserAutoComplete::MAX_ENTRIES);
         }
-        file_put_contents('autocomplete.txt', $auto->getList($_REQUEST['term']) . "\n\n\n", FILE_APPEND);
+
         echo $auto->getList($_REQUEST['term']);
         exit();
     }
