@@ -5,7 +5,7 @@
 /**
 * ilCreventoLogviewerGUI class
 *
-* @author Simon Moor <simon.moor@hslu.ch>
+* @author Raphael Heer <raphael.heer@hslu.ch>
 * @version $Id$
 * @ingroup ServicesUIComponent
 * 
@@ -64,10 +64,7 @@ class ilCreventoLogviewerGUI
                 break;
         }
         
-
-        $this->tpl->getStandardTemplate();
-        $this->tpl->show();
-        
+        $this->tpl->printToStdout();
     }
     
     private function checkAccess()
